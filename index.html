@@ -4,10 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0F5A05">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Перекрёсток · Орёл и решка</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<!-- ВАЖНО: ?v=5 — версия кэша. Меняй число при каждом обновлении файлов на GitHub Pages,
+     иначе телефон может показывать старую закэшированную версию style.css/script.js -->
+<link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 
@@ -42,11 +47,17 @@
     <div class="stats">
       <div class="pill pill--score" id="scorePill" title="Очки">
         <span class="pill__icon">🦅</span>
-        <span class="pill__value" id="scoreValue">0</span>
+        <div class="pill__body">
+          <span class="pill__label">Очки</span>
+          <span class="pill__value" id="scoreValue">0</span>
+        </div>
       </div>
       <div class="pill pill--loyalty" id="loyaltyPill" title="Баллы лояльности">
         <span class="pill__icon">🍃</span>
-        <span class="pill__value" id="loyaltyValue">100</span>
+        <div class="pill__body">
+          <span class="pill__label">Баллы</span>
+          <span class="pill__value" id="loyaltyValue">100</span>
+        </div>
       </div>
     </div>
   </header>
@@ -57,9 +68,19 @@
       <span>До пачки чипсов</span>
       <span id="progressText">0 / 10</span>
     </div>
-    <div class="progress-bar">
-      <div class="progress-bar__fill" id="progressFill"></div>
+
+    <div class="progress-track" id="progressTrack">
+      <div class="progress-track__fill" id="progressFill">
+        <span class="progress-track__shine"></span>
+      </div>
+      <div class="progress-wok" id="progressWok">
+        <span class="progress-wok__glow"></span>
+        <span class="progress-wok__emoji" id="progressWokEmoji">🥡</span>
+        <span class="progress-wok__flame">🔥</span>
+      </div>
     </div>
+
+    <div class="progress-dots" id="progressDots"></div>
   </div>
 
   <!-- Игровая зона -->
@@ -101,7 +122,7 @@
       <span class="lootbox__label">Пачка чипсов</span>
       <span class="lootbox__price">100 <span class="lootbox__price-icon">🍃</span></span>
     </button>
-    <p class="footer__note">Дизайн — в фирменной айдентике X5 Group · демо</p>
+    <p class="footer__note">Дизайн — в фирменной айдентике X5 Group · демо <span id="buildTag" class="build-tag">build v5</span></p>
   </footer>
 </div>
 
@@ -139,6 +160,6 @@
   </div>
 </div>
 
-<script src="script.js"></script>
+<script src="script.js?v=5"></script>
 </body>
 </html>
