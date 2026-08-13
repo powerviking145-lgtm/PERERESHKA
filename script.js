@@ -35,41 +35,24 @@
   const copyPromoBtn   = $('copyPromoBtn');
   const lootDoneBtn    = $('lootDoneBtn');
 
-  const PACK_COST = 100;          // сколько баллов лояльности стоит открыть пачку чипсов
-  const HEADS_PER_PACK = 10;      // сколько очков (орлов) нужно набрать для получения пачки
-  const STARTING_LOYALTY = 13000; // стартовые / тестовые баллы лояльности
-  const REFILL_ON_ZERO = 100;     // тестовое пополнение при обнулении баллов
-  const BONUS_GRANT_ID = 'bonus_13000_v1'; // метка одноразового бонуса, чтобы не начислять его повторно
+  const PACK_COST = 100;         // сколько баллов лояльности стоит открыть пачку чипсов
+  const HEADS_PER_PACK = 10;     // сколько очков (орлов) нужно набрать для получения пачки
+  const STARTING_LOYALTY = 100;  // стартовые / тестовые баллы лояльности
 
   /* ---------- СОСТОЯНИЕ (с сохранением в localStorage) ---------- */
   const STORAGE_KEY = 'perekrestok_coin_game_v1';
 
   function loadState(){
-    let st = null;
     try{
       const raw = localStorage.getItem(STORAGE_KEY);
-      if(raw) st = JSON.parse(raw);
+      if(raw) return JSON.parse(raw);
     }catch(e){}
-
-    if(!st){
-      return {
-        score: 0,          // всего очков (орлов)
-        loyalty: STARTING_LOYALTY,
-        packs: 0,           // доступные нераспакованные пачки чипсов
-        history: [],        // последние результаты 'H' | 'T'
-        grants: [BONUS_GRANT_ID]
-      };
-    }
-
-    if(!Array.isArray(st.grants)) st.grants = [];
-
-    // одноразовое начисление тестового бонуса — не даст начислить его повторно при перезагрузке
-    if(!st.grants.includes(BONUS_GRANT_ID)){
-      st.loyalty = (st.loyalty || 0) + STARTING_LOYALTY;
-      st.grants.push(BONUS_GRANT_ID);
-    }
-
-    return st;
+    return {
+      score: 0,          // всего очков (орлов)
+      loyalty: STARTING_LOYALTY,
+      packs: 0,           // доступные нераспакованные пачки чипсов
+      history: []          // последние результаты 'H' | 'T'
+    };
   }
 
   let state = loadState();
@@ -77,7 +60,6 @@
   function saveState(){
     try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
   }
-  saveState();
 
   /* ---------- ВИБРАЦИЯ (ASMR-паттерны) ---------- */
   const canVibrate = 'vibrate' in navigator;
@@ -242,10 +224,10 @@
 
       if(state.loyalty <= 0){
         setTimeout(() => {
-          state.loyalty = REFILL_ON_ZERO;
+          state.loyalty = STARTING_LOYALTY;
           renderStats();
           saveState();
-          showToast(`🍃 Тест: баллы лояльности пополнены до ${REFILL_ON_ZERO}`, 3000);
+          showToast(`🍃 Тест: баллы лояльности пополнены до ${STARTING_LOYALTY}`, 3000);
           vibrate(V_REFILL);
         }, 550);
       }
